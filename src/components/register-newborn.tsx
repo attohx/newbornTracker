@@ -9,7 +9,13 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function RegisterNewborn() {
   const [name, setName] = useState("");
@@ -44,33 +50,31 @@ export function RegisterNewborn() {
         </div>
         <div>
           <Label htmlFor="dob">Date of Birth:</Label>
-            <Popover>
-                <PopoverTrigger asChild>
-                    <Button
-                        variant={"outline"}
-                        className={cn(
-                            "w-full justify-start text-left font-normal",
-                            !dob && "text-muted-foreground"
-                        )}
-                    >
-                        <CalendarIcon className="mr-2 h-4 w-4"/>
-                        {dob ? format(dob, "PPP") : <span>Pick a date</span>}
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                        mode="single"
-                        selected={dob}
-                        onSelect={setDob}
-                        disabled={(date) =>
-                            date > new Date()
-                        }
-                        initialFocus
-                    />
-                </PopoverContent>
-            </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !dob && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {dob ? format(dob, "PPP") : <span>Pick a date</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={dob}
+                onSelect={setDob}
+                disabled={(date) => date > new Date()}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
         </div>
-         <div>
+        <div>
           <Label htmlFor="tob">Time of Birth:</Label>
           <Input
             type="time"
@@ -99,9 +103,15 @@ export function RegisterNewborn() {
               <SelectValue placeholder="Select a location" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Hospital A, Room 101">Hospital A, Room 101</SelectItem>
-              <SelectItem value="Maternity Clinic B, Ward 2">Maternity Clinic B, Ward 2</SelectItem>
-              <SelectItem value="Home Delivery, Address XYZ">Home Delivery, Address XYZ</SelectItem>
+              <SelectItem value="Hospital A, Room 101">
+                Hospital A, Room 101
+              </SelectItem>
+              <SelectItem value="Maternity Clinic B, Ward 2">
+                Maternity Clinic B, Ward 2
+              </SelectItem>
+              <SelectItem value="Home Delivery, Address XYZ">
+                Home Delivery, Address XYZ
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -123,4 +133,3 @@ export function RegisterNewborn() {
     </div>
   );
 }
-
