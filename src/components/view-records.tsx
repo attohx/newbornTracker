@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { FileDown, File, Eye, Trash2 } from "lucide-react";
+import { FileDown, File, Eye, Trash2, ArrowDown, ArrowUp } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -26,11 +26,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { format, parseISO } from 'date-fns';
 
 interface NewbornRecord {
   id: string;
@@ -79,6 +79,8 @@ const mockRecords: NewbornRecord[] = [
   },
 ];
 
+type SortOrder = "asc" | "desc";
+
 export function ViewRecords() {
   const [search, setSearch] = useState("");
   const [records, setRecords] = useState(mockRecords);
@@ -87,6 +89,10 @@ export function ViewRecords() {
     null
   );
   const { toast } = useToast();
+  const [sortColumn, setSortColumn] = useState<keyof NewbornRecord | null>(null);
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [filterDate, setFilterDate] = useState<Date | null>(null);
+
 
   const filteredRecords = records.filter(
     (record) =>
@@ -96,7 +102,40 @@ export function ViewRecords() {
         record.fatherName.toLowerCase().includes(search.toLowerCase())) ||
       record.location.toLowerCase().includes(search.toLowerCase()) ||
       record.doctorName.toLowerCase().includes(search.toLowerCase())
-  );
+  ).filter(record => {
+    if (!filterDate) return true;
+    const recordDate = parseISO(record.dob);
+    return (
+        recordDate.getFullYear() === filterDate.getFullYear() &&
+        recordDate.getMonth() === filterDate.getMonth() &&
+        recordDate.getDate() === filterDate.getDate()
+    );
+  });
+
+
+  const sortedRecords = [...filteredRecords].sort((a, b) => {
+    if (!sortColumn) return 0;
+    const aValue = a[sortColumn];
+    const bValue = b[sortColumn];
+
+    if (aValue < bValue) {
+      return sortOrder === "asc" ? -1 : 1;
+    }
+    if (aValue > bValue) {
+      return sortOrder === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const handleSort = (column: keyof NewbornRecord) => {
+    if (sortColumn === column) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortOrder("asc");
+    }
+  };
+
 
   const handleExport = (format: string) => {
     console.log(`Exporting records to ${format}...`);
@@ -117,12 +156,18 @@ export function ViewRecords() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
         <Input
           type="text"
           placeholder="Search records..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-md shadow-sm"
+        />
+        <Input
+          type="date"
+          placeholder="Filter by Date of Birth"
+          onChange={(e) => setFilterDate(e.target.value ? new Date(e.target.value) : null)}
           className="w-full max-w-md shadow-sm"
         />
         <DropdownMenu>
@@ -148,8 +193,19 @@ export function ViewRecords() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Date of Birth</TableHead>
+              <TableHead>
+                <Button variant="ghost" onClick={() => handleSort("name")}>
+                  Name
+                  {sortColumn === "name" &&
+                    (sortOrder === "asc" ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />)}
+                </Button>
+              </TableHead>
+              <TableHead>
+                <Button variant="ghost" onClick={() => handleSort("dob")}>
+                  Date of Birth
+                  {sortColumn === "dob" && (sortOrder === "asc" ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />)}
+                </Button>
+              </TableHead>
               <TableHead>Mother's Name</TableHead>
               <TableHead>Father's Name</TableHead>
               <TableHead>Location</TableHead>
@@ -158,14 +214,14 @@ export function ViewRecords() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredRecords.map((record) => (
+            {sortedRecords.map((record) => (
               <TableRow key={record.id}>
                 <TableCell>
                   <Button variant="link" onClick={() => handleRecordClick(record)}>
                     {record.name}
                   </Button>
                 </TableCell>
-                <TableCell>{record.dob}</TableCell>
+                <TableCell>{format(parseISO(record.dob), 'PPP')}</TableCell>
                 <TableCell>{record.motherName}</TableCell>
                 <TableCell>{record.fatherName}</TableCell>
                 <TableCell>{record.location}</TableCell>
@@ -188,7 +244,7 @@ export function ViewRecords() {
                 </TableCell>
               </TableRow>
             ))}
-            {filteredRecords.length === 0 && (
+            {sortedRecords.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} className="text-center">
                   No records found.
@@ -228,7 +284,7 @@ export function ViewRecords() {
                 <Input
                   type="text"
                   id="dob"
-                  defaultValue={selectedRecord.dob}
+                  defaultValue={format(parseISO(selectedRecord.dob), 'PPP')}
                   className="col-span-3 shadow-sm"
                   readOnly
                 />
