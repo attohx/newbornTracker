@@ -9,12 +9,14 @@ interface NewbornRecord {
   name: string;
   dob: string;
   parentName: string;
+  location: string;
+  doctor: string;
 }
 
 const mockRecords: NewbornRecord[] = [
-  { id: "1", name: "Alice", dob: "2024-01-20", parentName: "Bob" },
-  { id: "2", name: "Bob Jr.", dob: "2024-02-15", parentName: "Alice" },
-  { id: "3", name: "Charlie", dob: "2024-03-10", parentName: "David" },
+  { id: "1", name: "Alice", dob: "2024-01-20", parentName: "Bob", location: "Hospital A, Room 101", doctor: "Dr. Smith" },
+  { id: "2", name: "Bob Jr.", dob: "2024-02-15", parentName: "Alice", location: "Maternity Clinic B, Ward 2", doctor: "Dr. Johnson" },
+  { id: "3", name: "Charlie", dob: "2024-03-10", parentName: "David", location: "Home Delivery, Address XYZ", doctor: "Dr. Williams" },
 ];
 
 export function ViewRecords() {
@@ -23,7 +25,9 @@ export function ViewRecords() {
 
   const filteredRecords = records.filter((record) =>
     record.name.toLowerCase().includes(search.toLowerCase()) ||
-    record.parentName.toLowerCase().includes(search.toLowerCase())
+    record.parentName.toLowerCase().includes(search.toLowerCase()) ||
+    record.location.toLowerCase().includes(search.toLowerCase()) ||
+    record.doctor.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -44,6 +48,8 @@ export function ViewRecords() {
               <TableHead>Name</TableHead>
               <TableHead>Date of Birth</TableHead>
               <TableHead>Parent Name</TableHead>
+              <TableHead>Location</TableHead>
+              <TableHead>Doctor</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -52,11 +58,13 @@ export function ViewRecords() {
                 <TableCell>{record.name}</TableCell>
                 <TableCell>{record.dob}</TableCell>
                 <TableCell>{record.parentName}</TableCell>
+                <TableCell>{record.location}</TableCell>
+                <TableCell>{record.doctor}</TableCell>
               </TableRow>
             ))}
              {filteredRecords.length === 0 && (
               <TableRow>
-                <TableCell colSpan={3} className="text-center">No records found.</TableCell>
+                <TableCell colSpan={5} className="text-center">No records found.</TableCell>
               </TableRow>
             )}
           </TableBody>
@@ -65,3 +73,4 @@ export function ViewRecords() {
     </div>
   );
 }
+

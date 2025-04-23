@@ -9,17 +9,20 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 export function RegisterNewborn() {
   const [name, setName] = useState("");
   const [dob, setDob] = useState<Date | undefined>(undefined);
   const [tob, setTob] = useState("");
   const [parentName, setParentName] = useState("");
+  const [location, setLocation] = useState("");
+  const [doctor, setDoctor] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here (e.g., store data)
-    console.log("Form submitted", { name, dob, tob, parentName });
+    console.log("Form submitted", { name, dob, tob, parentName, location, doctor });
   };
 
   return (
@@ -89,6 +92,27 @@ export function RegisterNewborn() {
             required
           />
         </div>
+        <div>
+          <Label htmlFor="location">Location:</Label>
+          <Textarea
+            id="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="w-full"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="doctor">Doctor:</Label>
+          <Input
+            type="text"
+            id="doctor"
+            value={doctor}
+            onChange={(e) => setDoctor(e.target.value)}
+            className="w-full"
+            required
+          />
+        </div>
         <Button type="submit" className="w-full bg-accent text-white hover:bg-accent-foreground">
           Register
         </Button>
@@ -96,3 +120,4 @@ export function RegisterNewborn() {
     </div>
   );
 }
+
