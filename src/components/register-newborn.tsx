@@ -21,14 +21,15 @@ export function RegisterNewborn() {
   const [name, setName] = useState("");
   const [dob, setDob] = useState<Date | undefined>(undefined);
   const [tob, setTob] = useState("");
-  const [parentName, setParentName] = useState("");
+  const [motherName, setMotherName] = useState("");
+  const [fatherName, setFatherName] = useState("");
   const [location, setLocation] = useState("");
   const [doctorName, setDoctorName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here (e.g., store data)
-    console.log("Form submitted", { name, dob, tob, parentName, location, doctorName });
+    console.log("Form submitted", { name, dob, tob, motherName, fatherName, location, doctorName });
   };
 
   return (
@@ -85,15 +86,25 @@ export function RegisterNewborn() {
             required
           />
         </div>
-        <div>
-          <Label htmlFor="parentName">Parent Name:</Label>
+         <div>
+          <Label htmlFor="motherName">Mother's Name:</Label>
           <Input
             type="text"
-            id="parentName"
-            value={parentName}
-            onChange={(e) => setParentName(e.target.value)}
+            id="motherName"
+            value={motherName}
+            onChange={(e) => setMotherName(e.target.value)}
             className="w-full"
             required
+          />
+        </div>
+        <div>
+          <Label htmlFor="fatherName">Father's Name (Optional):</Label>
+          <Input
+            type="text"
+            id="fatherName"
+            value={fatherName}
+            onChange={(e) => setFatherName(e.target.value)}
+            className="w-full"
           />
         </div>
         <div>
