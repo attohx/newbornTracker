@@ -10,13 +10,13 @@ interface NewbornRecord {
   dob: string;
   parentName: string;
   location: string;
-  doctor: string;
+  doctorName: string;
 }
 
 const mockRecords: NewbornRecord[] = [
-  { id: "1", name: "Alice", dob: "2024-01-20", parentName: "Bob", location: "Hospital A, Room 101", doctor: "Dr. Smith" },
-  { id: "2", name: "Bob Jr.", dob: "2024-02-15", parentName: "Alice", location: "Maternity Clinic B, Ward 2", doctor: "Dr. Johnson" },
-  { id: "3", name: "Charlie", dob: "2024-03-10", parentName: "David", location: "Home Delivery, Address XYZ", doctor: "Dr. Williams" },
+  { id: "1", name: "Alice", dob: "2024-01-20", parentName: "Bob", location: "Hospital A, Room 101", doctorName: "Dr. Smith" },
+  { id: "2", name: "Bob Jr.", dob: "2024-02-15", parentName: "Alice", location: "Maternity Clinic B, Ward 2", doctorName: "Dr. Johnson" },
+  { id: "3", name: "Charlie", dob: "2024-03-10", parentName: "David", location: "Home Delivery, Address XYZ", doctorName: "Dr. Williams" },
 ];
 
 export function ViewRecords() {
@@ -27,7 +27,7 @@ export function ViewRecords() {
     record.name.toLowerCase().includes(search.toLowerCase()) ||
     record.parentName.toLowerCase().includes(search.toLowerCase()) ||
     record.location.toLowerCase().includes(search.toLowerCase()) ||
-    record.doctor.toLowerCase().includes(search.toLowerCase())
+    record.doctorName.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -49,7 +49,7 @@ export function ViewRecords() {
               <TableHead>Date of Birth</TableHead>
               <TableHead>Parent Name</TableHead>
               <TableHead>Location</TableHead>
-              <TableHead>Doctor</TableHead>
+              <TableHead>Doctor Name</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -59,7 +59,7 @@ export function ViewRecords() {
                 <TableCell>{record.dob}</TableCell>
                 <TableCell>{record.parentName}</TableCell>
                 <TableCell>{record.location}</TableCell>
-                <TableCell>{record.doctor}</TableCell>
+                <TableCell>{record.doctorName}</TableCell>
               </TableRow>
             ))}
              {filteredRecords.length === 0 && (

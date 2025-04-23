@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function RegisterNewborn() {
   const [name, setName] = useState("");
@@ -17,12 +17,12 @@ export function RegisterNewborn() {
   const [tob, setTob] = useState("");
   const [parentName, setParentName] = useState("");
   const [location, setLocation] = useState("");
-  const [doctor, setDoctor] = useState("");
+  const [doctorName, setDoctorName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here (e.g., store data)
-    console.log("Form submitted", { name, dob, tob, parentName, location, doctor });
+    console.log("Form submitted", { name, dob, tob, parentName, location, doctorName });
   };
 
   return (
@@ -94,21 +94,24 @@ export function RegisterNewborn() {
         </div>
         <div>
           <Label htmlFor="location">Location:</Label>
-          <Textarea
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full"
-            required
-          />
+          <Select onValueChange={setLocation}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a location" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Hospital A, Room 101">Hospital A, Room 101</SelectItem>
+              <SelectItem value="Maternity Clinic B, Ward 2">Maternity Clinic B, Ward 2</SelectItem>
+              <SelectItem value="Home Delivery, Address XYZ">Home Delivery, Address XYZ</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <div>
-          <Label htmlFor="doctor">Doctor:</Label>
+          <Label htmlFor="doctorName">Doctor Name:</Label>
           <Input
             type="text"
-            id="doctor"
-            value={doctor}
-            onChange={(e) => setDoctor(e.target.value)}
+            id="doctorName"
+            value={doctorName}
+            onChange={(e) => setDoctorName(e.target.value)}
             className="w-full"
             required
           />
