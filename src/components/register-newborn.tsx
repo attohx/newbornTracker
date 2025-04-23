@@ -13,12 +13,13 @@ import { CalendarIcon } from "lucide-react";
 export function RegisterNewborn() {
   const [name, setName] = useState("");
   const [dob, setDob] = useState<Date | undefined>(undefined);
+  const [tob, setTob] = useState("");
   const [parentName, setParentName] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission here (e.g., store data)
-    console.log("Form submitted", { name, dob, parentName });
+    console.log("Form submitted", { name, dob, tob, parentName });
   };
 
   return (
@@ -65,6 +66,17 @@ export function RegisterNewborn() {
                     />
                 </PopoverContent>
             </Popover>
+        </div>
+         <div>
+          <Label htmlFor="tob">Time of Birth:</Label>
+          <Input
+            type="time"
+            id="tob"
+            value={tob}
+            onChange={(e) => setTob(e.target.value)}
+            className="w-full"
+            required
+          />
         </div>
         <div>
           <Label htmlFor="parentName">Parent Name:</Label>
