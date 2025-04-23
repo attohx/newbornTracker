@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { RegisterNewborn } from "@/components/register-newborn";
 import { ViewRecords } from "@/components/view-records";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("register");
@@ -57,6 +58,7 @@ export default function Home() {
       <footer className="text-center text-sm text-muted-foreground py-3 shadow-top">
         Created by Cherri
       </footer>
+      <Toaster />
     </div>
   );
 }
