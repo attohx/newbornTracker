@@ -3,6 +3,16 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FileDown, File } from "lucide-react";
 
 interface NewbornRecord {
   id: string;
@@ -32,9 +42,14 @@ export function ViewRecords() {
     record.doctorName.toLowerCase().includes(search.toLowerCase())
   );
 
+   const handleExport = (format: string) => {
+    // Implement export logic here, e.g., using a library like jsPDF or exceljs
+    console.log(`Exporting records to ${format}...`);
+  };
+
   return (
     <div>
-      <div className="mb-4">
+      <div className="flex justify-between items-center mb-4">
         <Input
           type="text"
           placeholder="Search records..."
@@ -42,6 +57,24 @@ export function ViewRecords() {
           onChange={(e) => setSearch(e.target.value)}
           className="w-full max-w-md shadow-sm"
         />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="space-x-2">
+                <FileDown className="h-4 w-4" />
+                <span>Export</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleExport("pdf")}>
+                <File className="mr-2 h-4 w-4" />
+                <span>Export to PDF</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport("excel")}>
+                <File className="mr-2 h-4 w-4" />
+                <span>Export to Excel</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       </div>
       <div className="rounded-md border">
         <Table>
